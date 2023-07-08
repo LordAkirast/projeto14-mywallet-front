@@ -1,13 +1,24 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { useEffect } from "react"
+import { useState } from "react"
+import axios from "axios";
+import { Link, useNavigate } from 'react-router-dom';
+import TokenContext from "../components/context/Token"
 
-export default function HomePage() {
+export default function HomePage({settoken}) {
+  const [userName, setuserName] = useState('');
+  console.log(settoken)
+
+  useEffect(() => {
+
+  },[])
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
-        <BiExit />
+        <h1 data-test="user-name">Olá, Fulano</h1>
+        <BiExit data-test="logout" />
       </Header>
 
       <TransactionsContainer>
@@ -15,9 +26,9 @@ export default function HomePage() {
           <ListItemContainer>
             <div>
               <span>30/11</span>
-              <strong>Almoço mãe</strong>
+              <strong data-test="registry-name">Almoço mãe</strong>
             </div>
-            <Value color={"negativo"}>120,00</Value>
+            <Value color={"negativo"} data-test="registry-amount">120,00</Value>
           </ListItemContainer>
 
           <ListItemContainer>
@@ -31,20 +42,32 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={"positivo"} data-test="total-amount">2880,00</Value>
         </article>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
+     
         <button>
+        <Link to="nova-transacao/entrada">
+        
           <AiOutlinePlusCircle />
-          <p>Nova <br /> entrada</p>
+          <p data-test="new-income">Nova <br /> entrada</p>
+          </Link>
         </button>
+        
+       
         <button>
+        <Link to="nova-transacao/saida">
+        
+        
           <AiOutlineMinusCircle />
-          <p>Nova <br />saída</p>
+          <p data-test="new-expense">Nova <br />saída</p>
+        
+          </Link>
         </button>
+       
       </ButtonsContainer>
 
     </HomeContainer>

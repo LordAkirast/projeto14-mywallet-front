@@ -3,6 +3,7 @@ import styled from "styled-components";
 import MyWalletLogo from "../components/MyWalletLogo";
 import axios from "axios";
 import { useState } from 'react';
+import TokenContext from "../components/context/Token";
 
 export default function SignUpPage() {
   const [nome, setNome] = useState('');
