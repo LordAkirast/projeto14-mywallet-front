@@ -3,11 +3,13 @@ import { Link } from "react-router-dom"
 import MyWalletLogo from "../components/MyWalletLogo"
 import axios from "axios";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignInPage() {
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,25 +19,25 @@ export default function SignInPage() {
       senha,
     };
 
+
+
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, data);
+      console.log("deu certo no front")
+      navigate('/home')
       console.log(response.data);
+     
   
     
     } catch (error) {
 
-      if (!email) {
-        alert("Email precisa ser preenchido!")
-      }
-
-      if (!senha) {
-        alert("Senha precisa ser preenchido!")
-      }
-
-      alert(error)
+      alert(error.response.data)
 
       console.error(error);
     }
+
+   
+
   };
 
 
