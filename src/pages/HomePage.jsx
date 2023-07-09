@@ -13,6 +13,7 @@ import { useContext } from "react";
 export default function HomePage({settoken, userName}) {
 
   const [transactions, setTransactions] = useState([]);
+  let [total, settotal] = useState(0)
 
   
   useEffect(() => {
@@ -38,6 +39,18 @@ export default function HomePage({settoken, userName}) {
       });
 
       setTransactions(sortedTransactions); // Armazena as transações ordenadas no estado
+
+      // Calcula o saldo total
+      const total = sortedTransactions.reduce((accumulator, transaction) => {
+        if (transaction.metodo === "saida") {
+          return accumulator - parseFloat(transaction.valor);
+        } else {
+          return accumulator + parseFloat(transaction.valor);
+        }
+      }, 0);
+
+      settotal(total.toFixed(2));
+
 
       
       } catch (error) {
@@ -87,7 +100,7 @@ export default function HomePage({settoken, userName}) {
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"} data-test="total-amount">2880,00</Value>
+          <Value color={"positivo"} data-test="total-amount">{total}</Value>
         </article>
       </TransactionsContainer>
 
