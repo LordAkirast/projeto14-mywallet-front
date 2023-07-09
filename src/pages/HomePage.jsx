@@ -6,18 +6,25 @@ import { useState } from "react"
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import TokenContext from "../components/context/Token"
+import {v4 as uuid} from "uuid"
+import UserContext from "../components/context/User";
+import { useContext } from "react";
 
-export default function HomePage({settoken}) {
-  const [userName, setuserName] = useState('');
-  console.log(settoken)
+export default function HomePage({settoken, userName}) {
+  
 
   useEffect(() => {
+    const token = uuid()
+    settoken(token)
+    console.log("setTOKEN:" + settoken)
+    console.log("TOKEN:" + token)
+    console.log("userName:" + userName)
 
   },[])
   return (
     <HomeContainer>
       <Header>
-        <h1 data-test="user-name">Olá, Fulano</h1>
+        <h1 data-test="user-name">Olá, {userName}</h1>
         <BiExit data-test="logout" />
       </Header>
 

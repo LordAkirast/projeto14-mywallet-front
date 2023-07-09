@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignInPage({settoken}) {
+export default function SignInPage({settoken, setuserName}) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const navigate = useNavigate();
@@ -24,10 +24,12 @@ export default function SignInPage({settoken}) {
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, data);
+      console.log(response);
       console.log("deu certo no front")
-      settoken(response.data.token)
+      setuserName(response.data)
+      
       navigate('/home')
-      console.log(response.data);
+      
      
   
     
