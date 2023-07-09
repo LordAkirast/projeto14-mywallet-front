@@ -133,6 +133,7 @@ const Header = styled.header`
   font-size: 26px;
   color: white;
 `
+
 const TransactionsContainer = styled.article`
   flex-grow: 1;
   background-color: #fff;
@@ -142,15 +143,23 @@ const TransactionsContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: auto; 
+  
   article {
     display: flex;
-    justify-content: space-between;   
+    justify-content: space-between;
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    padding: 16px; 
     strong {
       font-weight: 700;
       text-transform: uppercase;
     }
   }
-`
+`;
+
+
 const ButtonsContainer = styled.section`
   margin-top: 15px;
   margin-bottom: 0;
