@@ -90,9 +90,9 @@ export default function HomePage({settoken, userName}) {
         </div>
         <Value
             color={transaction.metodo === "saida" ? "negativo" : "positivo"}
-            data-test="registry-amount"
+            
           >
-            {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            <p data-test="registry-amount">{parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
       </Value>
       </ListItemContainer>
     ))}
