@@ -12,20 +12,20 @@ export default function App() {
   const [token, settoken] = useState('')
   const [userName, setuserName] = useState('')
   return (
-    <UserContext.Provider value={{ userName: userName }}>
-    <TokenContext.Provider value={{ token: token }}>
-    <PagesContainer>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SignInPage settoken={settoken} setuserName={setuserName}/>} />
-          <Route path="/cadastro" element={<SignUpPage/>} />
-          <Route path="/home" element={<HomePage settoken={settoken} userName={userName}/>} />
-          <Route path="/home/nova-transacao/:tipo" element={<TransactionsPage settoken={settoken}/>} />
-        </Routes>
-      </BrowserRouter>
-    </PagesContainer>
-    </TokenContext.Provider>
-    </UserContext.Provider>
+      <UserContext.Provider value={{ userName: userName }}>
+        <TokenContext.Provider value={{ token: token }}>
+          <PagesContainer>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<SignInPage settoken={settoken} setuserName={setuserName} />} />
+                <Route path="/cadastro" element={<SignUpPage />} />
+                <Route path="/home" element={<HomePage settoken={settoken} userName={userName} />} />
+                <Route path="/home/nova-transacao/:tipo" element={<TransactionsPage settoken={settoken} />} />
+              </Routes>
+            </BrowserRouter>
+          </PagesContainer>
+        </TokenContext.Provider>
+      </UserContext.Provider>
   )
 }
 

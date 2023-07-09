@@ -4,19 +4,26 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { useEffect } from "react"
 import { useState } from "react"
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import TokenContext from "../components/context/Token"
-import {v4 as uuid} from "uuid"
+import { v4 as uuid } from "uuid"
 import UserContext from "../components/context/User";
 import { useContext } from "react";
 
-export default function HomePage({settoken, userName}) {
+export default function HomePage({ settoken, userName }) {
+
 
   const [transactions, setTransactions] = useState([]);
   let [total, settotal] = useState(0)
+  const navigate = useNavigate();
 
-  
+
   useEffect(() => {
+
+    if (!userName) {
+      alert("SEM AUTORIZAÇÃO: FAÇA O LOGIN NOVAMENTE")
+      navigate('/')
+    }
     const token = uuid()
     settoken(token)
     const data = {
@@ -28,106 +35,108 @@ export default function HomePage({settoken, userName}) {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/home`);
         console.log(response);
         console.log("fez o get de transações")
-         // Ordenar os dados em ordem de data mais recente
-      const sortedTransactions = response.data.sort((a, b) => {
-        // Extrair os valores de diaMesFormatado como "DD/MM" para comparação
-        const dateA = a.diaMesFormatado?.split("/")?.reverse()?.join("") || "";
-        const dateB = b.diaMesFormatado?.split("/")?.reverse()?.join("") || "";
 
-        // Comparar as datas
-        return dateB.localeCompare(dateA);
-      });
+        const sortedTransactions = response.data.sort((a, b) => {
 
-      setTransactions(sortedTransactions); // Armazena as transações ordenadas no estado
-
-      // Calcula o saldo total
-      const total = sortedTransactions.reduce((accumulator, transaction) => {
-        if (transaction.metodo === "saida") {
-          return accumulator - parseFloat(transaction.valor);
-        } else {
-          return accumulator + parseFloat(transaction.valor);
-        }
-      }, 0);
-
-      settotal(total.toFixed(2));
+          const dateA = a.diaMesFormatado?.split("/")?.reverse()?.join("") || "";
+          const dateB = b.diaMesFormatado?.split("/")?.reverse()?.join("") || "";
 
 
-      
+          return dateB.localeCompare(dateA);
+        });
+
+        setTransactions(sortedTransactions);
+
+
+        const total = sortedTransactions.reduce((accumulator, transaction) => {
+          if (transaction.metodo === "saida") {
+            return accumulator - parseFloat(transaction.valor);
+          } else {
+            return accumulator + parseFloat(transaction.valor);
+          }
+        }, 0);
+
+        settotal(total.toFixed(2));
+
+
+
       } catch (error) {
-  
+
         alert(error)
-  
+
         console.log(error);
       }
-  
-     
-  
+
+
+
     };
     getTransactions();
     console.log("setTOKEN:" + settoken)
     console.log("TOKEN:" + token)
     console.log("userName:" + userName)
-    console.log("data: " + data.token )
-
-   
+    console.log("data: " + data.token)
 
 
-  },[])
+
+
+  }, [])
   return (
     <HomeContainer>
       <Header>
         <h1 data-test="user-name">Olá, {userName}</h1>
-        <BiExit data-test="logout" />
+        <Link to="/">
+          <BiExit data-test="logout" />
+        </Link>
       </Header>
 
       <TransactionsContainer>
         <ul>
-        {transactions.map((transaction) => (
-      <ListItemContainer key={transaction.id}>
-        <div>
-          <span>{transaction.diaMesFormatado}</span>
-          <strong data-test="registry-name">{transaction.descricao}</strong>
-        </div>
-        <Value
-            color={transaction.metodo === "saida" ? "negativo" : "positivo"}
-            data-test="registry-amount"
-          >
-             {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '').replace('.', '').replace(' ','')}
-      </Value>
-      </ListItemContainer>
-    ))}
+          {transactions.map((transaction) => (
+            <ListItemContainer key={transaction.id}>
+              <div>
+                <span>{transaction.diaMesFormatado}</span>
+                <strong data-test="registry-name">{transaction.descricao}</strong>
+              </div>
+              <Value
+                color={transaction.metodo === "saida" ? "negativo" : "positivo"}
+                data-test="registry-amount"
+              >
+                {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '').replace('.', '').replace(' ', '')}
+              </Value>
+            </ListItemContainer>
+          ))}
         </ul>
 
         <article>
           <strong>Saldo</strong>
-          
-          <Value color={total > 0 ? "positivo":"negativo"} data-test="total-amount">{parseFloat(total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$','').replace('.', '')}</Value>
-          
+
+          <Value color={total > 0 ? "positivo" : "negativo"} data-test="total-amount">{parseFloat(total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '').replace('.', '')}</Value>
+
         </article>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
-     
+
         <button>
-        <Link to="nova-transacao/entrada">
-        
-          <AiOutlinePlusCircle />
-          <p data-test="new-income">Nova <br /> entrada</p>
+          <Link to="nova-transacao/entrada">
+
+            <AiOutlinePlusCircle />
+            <p data-test="new-income">Nova <br /> entrada</p>
           </Link>
         </button>
-        
-       
+
+
         <button>
-        <Link to="nova-transacao/saida">
-        
-        
-          <AiOutlineMinusCircle />
-          <p data-test="new-expense">Nova <br />saída</p>
-        
+          <Link to="nova-transacao/saida">
+
+
+            <AiOutlineMinusCircle />
+            <p data-test="new-expense">Nova <br />saída</p>
+
           </Link>
         </button>
-       
+
       </ButtonsContainer>
 
     </HomeContainer>

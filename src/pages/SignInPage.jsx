@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignInPage({settoken, setuserName}) {
+export default function SignInPage({ settoken, setuserName }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function SignInPage({settoken, setuserName}) {
       senha,
     };
 
-   
+
 
 
 
@@ -27,12 +27,8 @@ export default function SignInPage({settoken, setuserName}) {
       console.log(response);
       console.log("deu certo no front")
       setuserName(response.data)
-      
       navigate('/home')
-      
-     
-  
-    
+   
     } catch (error) {
 
       alert(error.response.data)
@@ -40,7 +36,7 @@ export default function SignInPage({settoken, setuserName}) {
       console.log(error);
     }
 
-   
+
 
   };
 
@@ -48,10 +44,10 @@ export default function SignInPage({settoken, setuserName}) {
 
   return (
     <SingInContainer>
-       <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <MyWalletLogo />
         <input data-test="email" placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input data-test="password" placeholder="Senha" type="password" autocomplete="new-password" value={senha} onChange={(e) => setSenha(e.target.value)}/>
+        <input data-test="password" placeholder="Senha" type="password" autocomplete="new-password" value={senha} onChange={(e) => setSenha(e.target.value)} />
         <button data-test="sign-in-submit">Entrar</button>
       </form>
 
