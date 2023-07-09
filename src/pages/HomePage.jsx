@@ -92,7 +92,7 @@ export default function HomePage({settoken, userName}) {
             color={transaction.metodo === "saida" ? "negativo" : "positivo"}
             data-test="registry-amount"
           >
-             {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '').replace('.', '')}
+             {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '').replace('.', '').replace(' ','')}
       </Value>
       </ListItemContainer>
     ))}
