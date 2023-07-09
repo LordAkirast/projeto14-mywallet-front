@@ -14,6 +14,15 @@ export default function TransactionsPage() {
   const { token } = useContext(TokenContext)
   const navigate = useNavigate();
 
+  const dataAtual = new Date();
+const dia = dataAtual.getDate();
+const mes = dataAtual.getMonth() + 1;
+
+const diaMesFormatado = `${dia}/${mes}`;
+
+console.log(diaMesFormatado); // Exemplo de saída: "1/7" para 1 de julho
+
+
   const url = window.location.href;
   console.log(url);
 
@@ -35,7 +44,8 @@ export default function TransactionsPage() {
     const data = {
       valor,
       descricao,
-      token
+      token,
+      diaMesFormatado
     };
 
    
@@ -50,7 +60,7 @@ export default function TransactionsPage() {
       
       } catch (error) {
   
-        alert(error.response)
+        alert(error.response.data)
   
         console.log(error);
       }

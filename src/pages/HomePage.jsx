@@ -11,14 +11,53 @@ import UserContext from "../components/context/User";
 import { useContext } from "react";
 
 export default function HomePage({settoken, userName}) {
-  
 
+  const [transactions, setTransactions] = useState([]);
+
+  
   useEffect(() => {
     const token = uuid()
     settoken(token)
+    const data = {
+      token
+    }
+
+    const getTransactions = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/home`);
+        console.log(response);
+        console.log("fez o get de transações")
+         // Ordenar os dados em ordem de data mais recente
+      const sortedTransactions = response.data.sort((a, b) => {
+        // Extrair os valores de diaMesFormatado como "DD/MM" para comparação
+        const dateA = a.diaMesFormatado?.split("/")?.reverse()?.join("") || "";
+        const dateB = b.diaMesFormatado?.split("/")?.reverse()?.join("") || "";
+
+        // Comparar as datas
+        return dateB.localeCompare(dateA);
+      });
+
+      setTransactions(sortedTransactions); // Armazena as transações ordenadas no estado
+
+      
+      } catch (error) {
+  
+        alert(error)
+  
+        console.log(error);
+      }
+  
+     
+  
+    };
+    getTransactions();
     console.log("setTOKEN:" + settoken)
     console.log("TOKEN:" + token)
     console.log("userName:" + userName)
+    console.log("data: " + data.token )
+
+   
+
 
   },[])
   return (
@@ -30,21 +69,20 @@ export default function HomePage({settoken, userName}) {
 
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong data-test="registry-name">Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"} data-test="registry-amount">120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+        {transactions.map((transaction) => (
+      <ListItemContainer key={transaction.id}>
+        <div>
+          <span>{transaction.diaMesFormatado}</span>
+          <strong data-test="registry-name">{transaction.descricao}</strong>
+        </div>
+        <Value
+          color={transaction.metodo === "saida" ? "negativo" : "positivo"}
+          data-test="registry-amount"
+        >
+          {transaction.valor}
+        </Value>
+      </ListItemContainer>
+    ))}
         </ul>
 
         <article>
