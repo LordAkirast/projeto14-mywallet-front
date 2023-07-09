@@ -89,18 +89,20 @@ export default function HomePage({settoken, userName}) {
           <strong data-test="registry-name">{transaction.descricao}</strong>
         </div>
         <Value
-          color={transaction.metodo === "saida" ? "negativo" : "positivo"}
-          data-test="registry-amount"
-        >
-          {transaction.valor}
-        </Value>
+            color={transaction.metodo === "saida" ? "negativo" : "positivo"}
+            data-test="registry-amount"
+          >
+            {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+      </Value>
       </ListItemContainer>
     ))}
         </ul>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"} data-test="total-amount">{total}</Value>
+          
+          <Value color={total > 0 ? "positivo":"negativo"} data-test="total-amount">{parseFloat(total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Value>
+          
         </article>
       </TransactionsContainer>
 
