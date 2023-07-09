@@ -90,9 +90,9 @@ export default function HomePage({settoken, userName}) {
         </div>
         <Value
             color={transaction.metodo === "saida" ? "negativo" : "positivo"}
-            
+            data-test="registry-amount"
           >
-            <p data-test="registry-amount">{parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+             {parseFloat(transaction.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$', '').replace('.', '')}
       </Value>
       </ListItemContainer>
     ))}
@@ -101,7 +101,7 @@ export default function HomePage({settoken, userName}) {
         <article>
           <strong>Saldo</strong>
           
-          <Value color={total > 0 ? "positivo":"negativo"} data-test="total-amount">{parseFloat(total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Value>
+          <Value color={total > 0 ? "positivo":"negativo"} data-test="total-amount">{parseFloat(total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace('R$','').replace('.', '')}</Value>
           
         </article>
       </TransactionsContainer>
